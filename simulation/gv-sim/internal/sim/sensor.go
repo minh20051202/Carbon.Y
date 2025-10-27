@@ -1,6 +1,10 @@
-package internal
+package sim
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Plain struct {
 	SensorID      string  `json:"sensorId"`
@@ -48,4 +52,48 @@ func NewSensor(id, unit, gas, basis string, lo, hi float64) Sensor {
 		RangeHi: hi,
 		Keys:    NewKeyPair(),
 	}
+}
+
+func (s *Sensor) nextPlain(rng Rander, at time.Time) (Plain, error) {
+	reading := boundedJitter(rng, s.RangeLo, s.RangeHi, 0.1) // ±10% of half-range
+	drift := clampI32(int32(rng.Intn(240001)-120000), -120000, 120000)
+
+	p := Plain{
+		SensorID:      s.ID,
+		TsUTC:         at.UTC().Format(time.RFC3339Nano),
+		BootID:        s.BootID,
+		Nonce:         s.nextN,
+		Gas:           s.Gas,
+		Reading:       reading,
+		Unit:          s.Unit,
+		Basis:         s.Basis,
+		CalibCertHash: RandHex(rng, 32),
+		ClockDriftMs:  drift,
+	}
+	if err := ValidateSensorPlain(p); err != nil {
+		return Plain{}, err
+	}
+	s.nextN++
+	return p, nil
+}
+
+func EnvelopeBuilder(rng Rander, sensor *Sensor, start time.Time) (Envelope, error) {
+	plain, err := sensor.nextPlain(rng, start)
+	if err != nil {
+		return Envelope{}, err
+	}
+	canon, lineB3, err := CanonicalizeAndHash(plain)
+	if err != nil {
+		return Envelope{}, err
+	}
+	sig := Sign(sensor.Keys.Priv, append([]byte(domainPrefix), canon...))
+	env := Envelope{
+		Plain:  plain,
+		LineB3: lineB3,
+		SigB64: sig,
+	}
+	if err := ValidateSensorEnvelope(env); err != nil {
+		return Envelope{}, err
+	}
+	return env, nil
 }

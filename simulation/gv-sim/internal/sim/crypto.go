@@ -1,4 +1,4 @@
-package internal
+package sim
 
 import (
 	"crypto/ed25519"
