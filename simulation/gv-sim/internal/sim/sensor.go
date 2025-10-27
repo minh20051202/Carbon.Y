@@ -77,7 +77,7 @@ func (s *Sensor) nextPlain(rng Rander, at time.Time) (Plain, error) {
 	return p, nil
 }
 
-func EnvelopeBuilder(rng Rander, sensor *Sensor, start time.Time) (Envelope, error) {
+func GenerateEnvelope(rng Rander, sensor *Sensor, start time.Time) (Envelope, error) {
 	plain, err := sensor.nextPlain(rng, start)
 	if err != nil {
 		return Envelope{}, err
@@ -96,4 +96,11 @@ func EnvelopeBuilder(rng Rander, sensor *Sensor, start time.Time) (Envelope, err
 		return Envelope{}, err
 	}
 	return env, nil
+}
+
+func (s *Sensor) NextNonceForDebug() int64 { return s.nextN }
+
+func (s *Sensor) SimulateBoot() {
+	s.BootID = uuid.New().String()
+	s.nextN = 0
 }

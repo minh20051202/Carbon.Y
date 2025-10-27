@@ -40,7 +40,7 @@ func postEnvelope(client *http.Client, url string, env sim.Envelope) error {
 
 func main() {
 	var (
-		urlFlag   = flag.String("url", "http://localhost:8080/api/envelopes", "POST endpoint for envelopes")
+		urlFlag   = flag.String("url", "http://localhost:3000/api/envelopes/ingest", "POST endpoint for envelopes")
 		intervalS = flag.Int("interval", 5, "seconds between sends in loop mode")
 		seed      = flag.Int64("seed", time.Now().UnixNano(), "RNG seed")
 	)
@@ -49,12 +49,11 @@ func main() {
 	log.SetFlags(0)
 	fmt.Println("GV-SIM REPL. Type 'help' for commands.")
 
-	// Prepare sensors (3 CO2 devices)
-	sensors := []*sim.Sensor{
-		newSensor("co2-rs485-00001"),
-		newSensor("co2-rs485-00002"),
-		newSensor("co2-rs485-00003"),
-	}
+	s1 := sim.NewSensor("sensor_01", "ppm", "CO2", "dry", 300, 1200)
+	s2 := sim.NewSensor("sensor_02", "ppm", "CO2", "dry", 300, 1200)
+	s3 := sim.NewSensor("sensor_03", "ppm", "CO2", "dry", 300, 1200)
+
+	sensors := []*sim.Sensor{&s1, &s2, &s3}
 	rng := sim.NewRand(*seed)
 
 	client := &http.Client{Timeout: 10 * time.Second}
@@ -194,10 +193,4 @@ func main() {
 			fmt.Println("unknown command; type 'help'")
 		}
 	}
-}
-
-// helper to make a CO2 sensor
-func newSensor(id string) *sim.Sensor {
-	s := sim.NewSensor(id, "CO2", "ppm", "dry", 380, 1200)
-	return &s
 }
