@@ -60,7 +60,7 @@ func main() {
 	endpoint := *urlFlag
 	interval := time.Duration(*intervalS) * time.Second
 	looping := false
-	ticker := time.NewTicker(24 * time.Hour) // dummy; will reset when loop starts
+	ticker := time.NewTicker(24 * time.Hour)
 	ticker.Stop()
 
 	// REPL
