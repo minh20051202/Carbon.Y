@@ -40,7 +40,7 @@ func postEnvelope(client *http.Client, url string, env sim.Envelope) error {
 
 func main() {
 	var (
-		urlFlag   = flag.String("url", "http://localhost:3000/api/envelopes/ingest", "POST endpoint for envelopes")
+		urlFlag   = flag.String("url", "http://localhost:3000/api/v1/envelopes/ingest", "POST endpoint for envelopes")
 		intervalS = flag.Int("interval", 5, "seconds between sends in loop mode")
 		seed      = flag.Int64("seed", time.Now().UnixNano(), "RNG seed")
 	)
