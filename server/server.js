@@ -1,5 +1,6 @@
 const express = require("express");
 const routes = require("./src/app/http/routes/index");
+const cors = require("cors");
 
 module.exports = function createServer() {
   const app = express();
