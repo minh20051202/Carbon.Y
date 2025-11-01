@@ -1,0 +1,366 @@
+.device-title {
+    text-align: left;
+    padding-left: 35px;
+    padding-top: 20px;
+    font-weight: 600;
+    margin-bottom: 0;
+    font-size: 25px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.page-header div {
+    font-size: 15px;
+    font-weight: 400;
+    color: #6b7280;
+    margin-left: 35px;
+    text-align: left;
+}
+
+.devices-section {
+    padding: 24px;
+    text-align: left;
+    color: #111827;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.devices-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.devices-filter-bar {
+    display: grid;
+    grid-template-columns: minmax(210px, 240px) minmax(350px, 420px) minmax(320px, 1fr);
+    gap: 16px;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.filter-group select,
+.filter-group input {
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #111827;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.status-filter .status-tabs {
+    display: inline-flex;
+    gap: 12px;
+    background-color: #f5f7fb;
+    border-radius: 12px;
+    padding: 6px 18px 6px 6px;
+    width: fit-content;
+    max-width: 100%;
+}
+
+.status-filter button {
+    border: none;
+    background: transparent;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.status-filter button.active {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.search-group {
+    width: 100%;
+    margin-left: 12px;
+}
+
+.search-group .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-group svg {
+    position: absolute;
+    left: 12px;
+    color: #9ca3af;
+}
+
+.search-group input {
+    padding-left: 36px;
+}
+
+.devices-table-wrapper {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.devices-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+}
+
+.devices-table thead tr {
+    background-color: #f5f7fb;
+}
+
+.devices-table th {
+    text-align: left;
+    font-weight: 600;
+    color: #4b5563;
+    padding: 14px 18px;
+}
+
+.devices-table tbody tr {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.devices-table tbody tr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+}
+
+.devices-table td {
+    padding: 14px 18px;
+    color: #1f2937;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.devices-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.device-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.device-row.offline {
+    background-color: #fee2e2;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.active {
+    background-color: #22c55e;
+}
+
+.status-dot.warning {
+    background-color: #facc15;
+}
+
+.status-dot.offline {
+    background-color: #f87171;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.status-pill.active {
+    background-color: #dcfce7;
+    color: #047857;
+}
+
+.status-pill.warning {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.status-pill.offline {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.device-last-active {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.device-last-active small {
+    color: #6b7280;
+}
+
+.device-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.device-chip.success {
+    background-color: #dcfce7;
+    color: #047857;
+}
+
+.device-chip.warning {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.device-chip.danger {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.device-chip.muted {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+}
+
+.device-actions {
+    display: inline-flex;
+    gap: 8px;
+}
+
+.device-actions button {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.device-actions button.detail {
+    background-color: #e0ebff;
+    color: #1d4ed8;
+}
+
+.device-actions button.disable {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.devices-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.devices-pagination {
+    display: flex;
+    gap: 12px;
+}
+
+.devices-pagination button {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+.devices-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.devices-actions button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-device {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.add-device svg {
+    color: inherit;
+}
+
+.export-devices {
+    background-color: #f3f4f6;
+    color: #111827;
+}
+
+@media (max-width: 992px) {
+    .devices-filter-bar {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .devices-section {
+        padding: 16px;
+    }
+
+    .devices-card {
+        padding: 20px;
+    }
+
+    .device-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .devices-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
