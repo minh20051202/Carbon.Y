@@ -1,15 +1,17 @@
 #root {
   margin: 0;
   text-align: center;
+  height: 100vh;
 }
 
 .layout {
   display: grid;
   grid-template-columns: 250px 1fr;
   grid-template-rows: 50px 1fr;
-  min-height: 100vh;
+  height: 100vh;
   gap: 1px;
   background-color: #dddfe2;
+  overflow: hidden;
 }
 
 .layout>* {
@@ -102,6 +104,12 @@
 
 .main-content {
   position: relative;
+  grid-column: 2 / span 1;
+  grid-row: 2 / span 1;
+  height: calc(100vh - 50px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-align: left;
 }
 
 .main-content > * {
@@ -118,4 +126,23 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.sidebar {
+  grid-column: 1 / span 1;
+  grid-row: 2 / span 1;
+  height: calc(100vh - 50px);
+  overflow-y: auto;
+  text-align: left;
+}
+
+.brand {
+  grid-column: 1 / span 1;
+  grid-row: 1 / span 1;
+}
+
+.company-name {
+  grid-column: 2 / span 1;
+  grid-row: 1 / span 1;
+  justify-content: flex-start;
 }
