@@ -1,131 +1,48 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from 'recharts';
 import EmissionTableRow from './EmissionTableRow';
 import './Emission.css';
 
 function Emission() {
-  const [emissionEntries] = useState([
-    {
-      id: 'B2025102401',
-      timeRange: '00:00-01:00',
-      device: 'sensor_01',
-      tc02e: 1.23,
-      dqi: 0.98,
-      status: 'submitted',
-      actionLabel: 'Xem ProofPack',
-      actionVariant: 'link'
-    },
-    {
-      id: 'B2025102402',
-      timeRange: '01:00-02:00',
-      device: 'sensor_03',
-      tc02e: 2.01,
-      dqi: 0.91,
-      status: 'submitted',
-      actionLabel: 'Xem ProofPack',
-      actionVariant: 'link'
-    },
-    {
-      id: 'B2025102403',
-      timeRange: '02:00-03:00',
-      device: 'sensor_03',
-      tc02e: 1.75,
-      dqi: 0.78,
-      status: 'rejected',
-      actionLabel: 'Tải lại',
-      actionVariant: 'danger'
-    },
-    {
-      id: 'B2025102404',
-      timeRange: '03:00-04:00',
-      device: 'sensor_01',
-      tc02e: 3.22,
-      dqi: 0.85,
-      status: 'review',
-      actionLabel: 'Đang xử lý',
-      actionVariant: 'muted'
-    },
-    {
-      id: 'B2025102405',
-      timeRange: '04:00-05:00',
-      device: 'sensor_06',
-      tc02e: 0.95,
-      dqi: 0.93,
-      status: 'submitted',
-      actionLabel: 'Xem ProofPack',
-      actionVariant: 'link'
-    },
-    {
-      id: 'B2025102406',
-      timeRange: '05:00-06:00',
-      device: 'sensor_06',
-      tc02e: 1.10,
-      dqi: 0.88,
-      status: 'submitted',
-      actionLabel: 'Xem ProofPack',
-      actionVariant: 'link'
-    },
-    {
-      id: 'B2025102407',
-      timeRange: '06:00-07:00',
-      device: 'sensor_09',
-      tc02e: 1.95,
-      dqi: 0.82,
-      status: 'rejected',
-      actionLabel: 'Tải lại',
-      actionVariant: 'danger'
-    },
-    {
-      id: 'B2025102408',
-      timeRange: '07:00-08:00',
-      device: 'sensor_01',
-      tc02e: 1.45,
-      dqi: 0.87,
-      status: 'submitted',
-      actionLabel: 'Xem ProofPack',
-      actionVariant: 'link'
-    },
-    {
-      id: 'B2025102409',
-      timeRange: '08:00-09:00',
-      device: 'sensor_06',
-      tc02e: 2.45,
-      dqi: 0.89,
-      status: 'submitted',
-      actionLabel: 'Xem ProofPack',
-      actionVariant: 'link'
-    },
-    {
-      id: 'B2025102410',
-      timeRange: '09:00-10:00',
-      device: 'sensor_01',
-      tc02e: 1.23,
-      dqi: 0.76,
-      status: 'review',
-      actionLabel: 'Đang xử lý',
-      actionVariant: 'muted'
-    },
-    {
-      id: 'B2025102411',
-      timeRange: '10:00-11:00',
-      device: 'sensor_03',
-      tc02e: 2.33,
-      dqi: 0.99,
-      status: 'submitted',
-      actionLabel: 'Xem ProofPack',
-      actionVariant: 'link'
-    },
-    {
-      id: 'B2025102412',
-      timeRange: '11:00-12:00',
-      device: 'sensor_09',
-      tc02e: 2.00,
-      dqi: 0.87,
-      status: 'submitted',
-      actionLabel: 'Xem ProofPack',
-      actionVariant: 'link'
+  const [emissionEntries, SetEmissionEntries] = useState([]);
+
+  const [numPage, setNumPage] = useState(1);
+  const [totalData, setTotalData] = useState(0);
+
+  const fetchBatch = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/v1/batches/get/?limit=10&page=${numPage}`);
+      const data = await response.json();
+      console.log('Fetched batch data:', data.data);
+      setTotalData(data.total);
+      SetEmissionEntries(data.data);
+    } catch (error) {
+      console.error('Error fetching batch data:', error);
     }
-  ]);
+  };
+
+  useEffect(() => {
+    fetchBatch();
+
+    const interval = setInterval(() => {
+      fetchBatch();
+    }, 120000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  let randState = ['submitted', 'review', 'rejected'];
+
+  // {
+  //   id: 'B2025102401',
+  //   timeRange: '00:00-01:00',
+  //   device: 'sensor_01',
+  //   tc02e: 1.23,
+  //   dqi: 0.98,
+  //   status: 'submitted',
+  //   actionLabel: 'Xem ProofPack',
+  //   actionVariant: 'link'
+  // }
 
   const [dateFilter, setDateFilter] = useState('today');
   const [searchValue, setSearchValue] = useState('');
@@ -171,6 +88,20 @@ function Emission() {
     ],
     []
   );
+
+  const handlePreviousPage = () => {
+    if (numPage > 1) {
+      setNumPage(numPage - 1);
+      fetchBatch();
+    }
+  };
+
+  const handleNextPage = () => {
+    if (numPage < Math.ceil(totalData / 10)) {
+      setNumPage(numPage + 1);
+      fetchBatch();
+    }
+  };
 
   return (
     <div className='emission-section'>
@@ -250,12 +181,26 @@ function Emission() {
           <div className='emission-table-card'>
             <div className='table-header'>
               <h3>Bảng dữ liệu phát thải</h3>
+              <div className='page-indicator'>{numPage} / {Math.ceil(totalData / 10)}</div>
+              <div className='nav-buttons'>
+                <button className='nav-btn' onClick={handlePreviousPage}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+                  </svg>
+                </button>
+                <button className='nav-btn' onClick={handleNextPage}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+</svg>
+                </button>
+              </div>
             </div>
             <div className='table-wrapper'>
               <table className='emission-table'>
                 <thead>
                   <tr>
                     <th>Batch ID</th>
+                    <th>Ngày</th>
                     <th>Khoảng thời gian</th>
                     <th>Thiết bị</th>
                     <th>tCO2e</th>
@@ -266,7 +211,7 @@ function Emission() {
                 </thead>
                 <tbody>
                   {filteredEntries.map((entry) => (
-                    <EmissionTableRow key={entry.id} entry={entry} />
+                    <EmissionTableRow key={entry.id} entry={entry} status={randState[Math.floor(Math.random() * 1000) % 3]} />
                   ))}
                 </tbody>
               </table>
