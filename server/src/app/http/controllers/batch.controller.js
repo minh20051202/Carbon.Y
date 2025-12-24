@@ -67,6 +67,14 @@ const getBatchesController = async (req, res) => {
     ];
 
     const [result] = await Batch.aggregate(pipeline);
+
+    if (result && result.data) {
+      result.data = result.data.map((item) => ({
+        ...item,
+        randStatus: Math.random() < 0.1 ? 0 : 1,
+      }));
+    }
+
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

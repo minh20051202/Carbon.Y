@@ -50,10 +50,10 @@ func main() {
 	fmt.Println("GV-SIM REPL. Type 'help' for commands.")
 
 	s1 := sim.NewSensor("sensor_01", "ppm", "CO2", "dry", 300, 1200)
-	s2 := sim.NewSensor("sensor_02", "ppm", "CO2", "dry", 300, 1200)
-	s3 := sim.NewSensor("sensor_03", "ppm", "CO2", "dry", 300, 1200)
+	// s2 := sim.NewSensor("sensor_02", "ppm", "CO2", "dry", 300, 1200)
+	// s3 := sim.NewSensor("sensor_03", "ppm", "CO2", "dry", 300, 1200)
 
-	sensors := []*sim.Sensor{&s1, &s2, &s3}
+	sensors := []*sim.Sensor{&s1}
 	rng := sim.NewRand(*seed)
 
 	client := &http.Client{Timeout: 10 * time.Second}
