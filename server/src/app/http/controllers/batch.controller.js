@@ -7,7 +7,9 @@ const fixedRandStatusForItem = (item) => {
   }|${item.windowEnd ?? ""}`;
   const digest = crypto.createHash("sha256").update(key).digest();
   const bucket = digest.readUInt32BE(0) % 100;
-  return bucket < 10 ? 0 : 1;
+  if (bucket < 10) return 0;
+  if (bucket < 20) return 1;
+  return 2;
 };
 
 const getBatchesController = async (req, res) => {
