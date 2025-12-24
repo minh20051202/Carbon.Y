@@ -1,4 +1,14 @@
 const { Batch } = require("../../../../domains/batches/model");
+const crypto = require("crypto");
+
+const fixedRandStatusForItem = (item) => {
+  const key = `${item.batchId ?? ""}|${item.sensorId ?? ""}|${
+    item.windowStart ?? ""
+  }|${item.windowEnd ?? ""}`;
+  const digest = crypto.createHash("sha256").update(key).digest();
+  const bucket = digest.readUInt32BE(0) % 100;
+  return bucket < 10 ? 0 : 1;
+};
 
 const getBatchesController = async (req, res) => {
   try {
@@ -71,7 +81,7 @@ const getBatchesController = async (req, res) => {
     if (result && result.data) {
       result.data = result.data.map((item) => ({
         ...item,
-        randStatus: Math.random() < 0.1 ? 0 : 1,
+        randStatus: fixedRandStatusForItem(item),
       }));
     }
 
