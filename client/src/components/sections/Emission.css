@@ -9,8 +9,10 @@
 
 .emission-header h2 {
     margin: 0;
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #111827;
 }
 
 .emission-header p {
@@ -25,9 +27,10 @@
     align-items: flex-end;
     gap: 16px;
     background: #fff;
-    padding: 16px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    padding: 18px 20px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .toolbar-left,
@@ -82,9 +85,10 @@
 
 .chart-card {
     background: #fff;
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
 }
@@ -98,7 +102,9 @@
 
 .chart-header h4 {
     margin: 0;
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #374151;
 }
 
 .legend {
@@ -125,9 +131,10 @@
 
 .emission-table-card {
     background: #fff;
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .table-header {
@@ -136,12 +143,14 @@
 
 .table-header h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
 }
 
 .table-wrapper {
     border: 1px solid #e5e7eb;
-    border-radius: 14px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
@@ -183,10 +192,14 @@
 .status-pill {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 6px 12px;
     border-radius: 999px;
     font-weight: 600;
     font-size: 13px;
+    min-width: 90px;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .status-pill.submitted {
@@ -233,9 +246,10 @@
 
 .sidebar-card {
     background: #fff;
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 18px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -317,6 +331,23 @@
     .emission-sidebar {
         flex-direction: column;
     }
+
+    .emission-table th,
+    .emission-table td {
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+
+    .emission-table th:nth-child(7),
+    .emission-table td:nth-child(7) {
+        min-width: 100px;
+    }
+
+    .status-pill {
+        padding: 5px 10px;
+        font-size: 12px;
+        min-width: 80px;
+    }
 }
 
 
@@ -333,25 +364,24 @@
 }
 
 .nav-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: #e5e5e5;
-    color: #333;
-    font-size: 16px;
-    font-weight: bold;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: all 0.15s ease;
 }
 
 .nav-btn:hover {
-    background: #d1d1d1;
-    transform: translateY(-2px);
+    background: #f3f4f6;
+    border-color: #d1d5db;
 }
 
 .nav-btn:active {
@@ -366,12 +396,10 @@
 
 .page-indicator {
     padding: 6px 14px;
-    border-radius: 8px;
-    border: 1.5px solid #c5c5c5;
-    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    font-size: 13px;
     font-weight: 600;
-    color: #333;
-    background: #f9f9f9;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    font-weight: bold;
+    color: #374151;
+    background: #ffffff;
 }

@@ -4,13 +4,33 @@ const statusLabelMap = {
   rejected: { label: 'Bị từ chối', className: 'status-pill rejected' }
 };
 
+const formatTimeToGMT7 = (isoString) => {
+  const date = new Date(isoString);
+  return date.toLocaleTimeString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'Asia/Ho_Chi_Minh'
+  });
+};
+
+const formatDateToGMT7 = (isoString) => {
+  const date = new Date(isoString);
+  return date.toLocaleDateString('vi-VN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    timeZone: 'Asia/Ho_Chi_Minh'
+  });
+};
+
 function EmissionTableRow({ entry, status}) {
 
   return (
     <tr className={`emission-row ${entry.status}`}>
       <td>{entry.batchId}</td>
-      <td>{entry.windowStart.slice(0, 10)}</td>
-      <td>{entry.windowStart.slice(11, 16) + " - " + entry.windowEnd.slice(11, 16)}</td>
+      <td>{formatDateToGMT7(entry.windowStart)}</td>
+      <td>{formatTimeToGMT7(entry.windowStart) + " - " + formatTimeToGMT7(entry.windowEnd)}</td>
       <td>{entry.sensorId}</td>
       <td>{(entry.tco2e * 10).toFixed(3)}</td>
       <td>{entry.dqi.toFixed(2)}</td>

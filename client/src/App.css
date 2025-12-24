@@ -6,11 +6,11 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 250px 1fr;
-  grid-template-rows: 50px 1fr;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 56px 1fr;
   height: 100vh;
   gap: 1px;
-  background-color: #dddfe2;
+  background-color: #e5e7eb;
   overflow: hidden;
 }
 
@@ -33,9 +33,11 @@
 .company-name {
   display: flex;
   align-items: center;
-  padding-left: 25px;
+  padding-left: 24px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: -0.01em;
 }
 
 .sidebar>.nav-menu {
@@ -48,17 +50,19 @@
 .nav-menu>.nav-item {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 15px 10px;
+  gap: 14px;
+  padding: 12px 10px;
   text-align: left;
-  color: black;
+  color: #374151;
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
-  width: 77%;
+  width: 85%;
   position: relative;
   z-index: 0;
-  transition: color 0.25s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  border-radius: 8px;
+  margin: 2px auto;
 }
 
 .nav-item > svg {
@@ -67,7 +71,8 @@
 }
 
 .nav-item:hover {
-  background: #e5e7eb;
+  background: #f3f4f6;
+  color: #1f2937;
 }
 
 .nav-item.active {
@@ -106,10 +111,11 @@
   position: relative;
   grid-column: 2 / span 1;
   grid-row: 2 / span 1;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 56px);
   overflow-y: auto;
   overflow-x: hidden;
   text-align: left;
+  background-color: #f8fafc;
 }
 
 .main-content > * {
@@ -131,9 +137,10 @@
 .sidebar {
   grid-column: 1 / span 1;
   grid-row: 2 / span 1;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 56px);
   overflow-y: auto;
   text-align: left;
+  padding-top: 8px;
 }
 
 .brand {

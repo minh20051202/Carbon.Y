@@ -6,16 +6,18 @@
 
 .logs-title {
     margin: 0 0 20px;
-    font-size: 25px;
+    font-size: 26px;
     font-weight: 700;
     color: #111827;
+    letter-spacing: -0.02em;
 }
 
 .logs-card {
     background: #ffffff;
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -82,7 +84,7 @@
 
 .logs-table-wrapper {
     border: 1px solid #e5e7eb;
-    border-radius: 14px;
+    border-radius: 10px;
     overflow: hidden;
 }
 

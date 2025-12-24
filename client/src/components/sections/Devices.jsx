@@ -1,18 +1,30 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import DeviceRow from './DeviceRow';
 import './Devices.css';
 
 function Devices() {
-  const [sensorDevices] = useState([
+  const [sensorDevices, setSensorDevices] = useState([
     {
       id: 'sensor-01',
       name: 'sensor_01',
       type: 'CO2 Sensor',
       status: 'active',
-      lastActiveTime: '09:32:12',
-      lastActiveDate: '24/10/2025',
+      lastActiveTime: '--:--:--',
+      lastActiveDate: '--/--/----',
       calibration: 'OK',
       calibrationVariant: 'success',
+      alert: '--',
+      alertVariant: 'muted'
+    },
+    {
+      id: 'sensor-02',
+      name: 'sensor_02',
+      type: 'CO2 Sensor',
+      status: 'warning',
+      lastActiveTime: '--:--:--',
+      lastActiveDate: '--/--/----',
+      calibration: 'Hết hạn',
+      calibrationVariant: 'danger',
       alert: '--',
       alertVariant: 'muted'
     },
@@ -20,21 +32,9 @@ function Devices() {
       id: 'sensor-03',
       name: 'sensor_03',
       type: 'CO2 Sensor',
-      status: 'active',
-      lastActiveTime: '09:30:11',
-      lastActiveDate: '24/10/2025',
-      calibration: 'OK',
-      calibrationVariant: 'success',
-      alert: '--',
-      alertVariant: 'muted'
-    },
-    {
-      id: 'sensor-05',
-      name: 'sensor_05',
-      type: 'CO2 Sensor',
       status: 'warning',
-      lastActiveTime: '09:22:03',
-      lastActiveDate: '24/10/2025',
+      lastActiveTime: '--:--:--',
+      lastActiveDate: '--/--/----',
       calibration: 'Sắp hết (26/10)',
       calibrationVariant: 'warning',
       alert: 'Lệch 3 phút',
@@ -45,8 +45,8 @@ function Devices() {
       name: 'sensor_07',
       type: 'CO2 Sensor',
       status: 'warning',
-      lastActiveTime: '09:15:22',
-      lastActiveDate: '24/10/2025',
+      lastActiveTime: '--:--:--',
+      lastActiveDate: '--/--/----',
       calibration: 'Hết hạn',
       calibrationVariant: 'danger',
       alert: 'Chưa upload batch B42',
@@ -56,8 +56,8 @@ function Devices() {
 
   const [edgeDevices] = useState([
     {
-      id: 'edge-02',
-      name: 'edge_02',
+      id: 'edge-01',
+      name: 'edge_01',
       type: 'Edge Agent',
       status: 'offline',
       lastActiveTime: '08:45:11',
@@ -68,10 +68,10 @@ function Devices() {
       alertVariant: 'danger'
     },
     {
-      id: 'edge-03',
-      name: 'edge_03',
+      id: 'edge-02',
+      name: 'edge_02',
       type: 'Edge Agent',
-      status: 'active',
+      status: 'offline',
       lastActiveTime: '09:34:55',
       lastActiveDate: '24/10/2025',
       calibration: '--',
@@ -80,6 +80,73 @@ function Devices() {
       alertVariant: 'muted'
     }
   ]);
+
+  useEffect(() => {
+    const fetchLastActiveTime = async () => {
+      try {
+        let allBatches = [];
+        let page = 1;
+        let hasMore = true;
+
+        while (hasMore) {
+          const response = await fetch(`http://localhost:3000/api/v1/batches/get/?limit=1000&page=${page}`);
+          const result = await response.json();
+          
+          if (result.data && result.data.length > 0) {
+            allBatches = [...allBatches, ...result.data];
+            if (allBatches.length >= result.total) {
+              hasMore = false;
+            } else {
+              page++;
+            }
+          } else {
+            hasMore = false;
+          }
+        }
+
+        const latestBySensor = {};
+        allBatches.forEach(batch => {
+          const sensorId = batch.sensorId;
+          const batchDate = new Date(batch.windowStart);
+          
+          if (!latestBySensor[sensorId] || batchDate > new Date(latestBySensor[sensorId].windowStart)) {
+            latestBySensor[sensorId] = batch;
+          }
+        });
+
+        setSensorDevices(prevDevices => 
+          prevDevices.map(device => {
+            const latestBatch = latestBySensor[device.name];
+            if (latestBatch) {
+              const lastActiveDate = new Date(latestBatch.windowStart);
+              return {
+                ...device,
+                lastActiveTime: lastActiveDate.toLocaleTimeString('vi-VN', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: false
+                }),
+                lastActiveDate: lastActiveDate.toLocaleDateString('vi-VN', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric'
+                })
+              };
+            }
+            return device;
+          })
+        );
+      } catch (error) {
+        console.error('Error fetching last active time:', error);
+      }
+    };
+
+    fetchLastActiveTime();
+
+    const interval = setInterval(fetchLastActiveTime, 120000);
+    return () => clearInterval(interval);
+  }, []);
 
   const [deviceTypeFilter, setDeviceTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
